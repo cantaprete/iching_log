@@ -21,7 +21,7 @@ jobs:
         id: check_changes
         run: |
           git fetch origin main  # Replace 'main' with your default branch if different
-          if git diff --quiet origin/main -- path/to/your/file.txt; then
+          if git diff --quiet origin/main -- data/sig.csv; then
             echo "No changes detected."
             echo "changed=false" >> $GITHUB_ENV
           else
