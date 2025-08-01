@@ -17,10 +17,10 @@ jobs:
         id: check_changes
         run: |
           git fetch origin main  # Replace 'main' with your default branch if different
-          git diff --quiet origin/main -- /data/sig.csv || echo "changed" > changed.txt
+          git diff --quiet origin/main -- data/sig.csv || echo "changed" > changed.txt
 
       - name: Run Python script if file changed
         if: steps.check_changes.outputs.changed == 'changed'
         run: |
           pip install matplotlib numpy pandas
-          python /docs/print_plots.py
+          python docs/print_plots.py
