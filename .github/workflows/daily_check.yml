@@ -20,8 +20,10 @@ jobs:
       - name: Check for file changes
         id: check_changes
         run: |
+          ls -la
           git fetch origin main  # Replace 'main' with your default branch if different
           git diff --quiet origin/main -- data/sig.csv || echo "changed" > changed.txt
+          ls -la
 
       - name: Run Python script if file changed
         if: steps.check_changes.outputs.changed == 'changed'
