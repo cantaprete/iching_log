@@ -20,10 +20,14 @@ jobs:
       - name: Check for file changes
         id: check_changes
         run: |
-          ls -la
           git fetch origin main  # Replace 'main' with your default branch if different
-          git diff --quiet origin/main -- data/sig.csv || echo "changed" > changed.txt
-          ls -la
+          if git diff --quiet origin/main -- path/to/your/file.txt; then
+            echo "No changes detected."
+            echo "changed=false" >> $GITHUB_ENV
+          else
+            echo "Changes detected."
+            echo "changed=true" >> $GITHUB_ENV
+          fi
 
       - name: Run Python script if file changed
         if: steps.check_changes.outputs.changed == 'changed'
