@@ -1,0 +1,26 @@
+name: Daily Check
+
+on:
+  schedule:
+    - cron: '8 14 * * *'
+  workflow_dispatch:
+
+jobs:
+  check_file_and_run_script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Check for file changes
+        id: check_changes
+        run: |
+          git fetch origin main  # Replace 'main' with your default branch if different
+          git diff --quiet origin/main -- /data/sig.csv || echo "changed" > changed.txt
+
+      - name: Run Python script if file changed
+        if: steps.check_changes.outputs.changed == 'changed'
+        run: |
+          pip install matplotlib numpy pandas
+          python /docs/print_plots.py
