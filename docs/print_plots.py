@@ -1,9 +1,12 @@
+import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-# rand_log = pd.read_csv('rand.csv', sep=',')
-# rand_log.set_index('time', inplace=True)
+plt.rcParams['font.family'] = 'Times'
+
+# rand_log = pd.read_csv('./data/rand.csv', sep=',')
+# # rand_log.set_index('time', inplace=True)
 # types = rand_log['type'].unique()
 
 # fig, ax = plt.subplots()
@@ -12,10 +15,11 @@ import numpy as np
 #     counts = df_type['hex'].value_counts().sort_index()
 #     ax.plot(counts.index, counts.values, label=type, marker='o')
 
-# ax.set_xlabel('Esagrammi')
-# ax.set_ylabel('Occorrenze')
+# # ax.set_xlabel('Esagrammi')
+# # ax.set_ylabel('Occorrenze')
 # ax.set_title('Occorrenze degli esagrammi per tipo (casuale)')
 # ax.legend()
+# plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(rand_log['time'])} esagrammi", wrap=True, horizontalalignment='center', fontsize=12)
 # plt.savefig('./docs/rand_rect.png')
 
 # hex_values = range(1, 65)
@@ -30,15 +34,16 @@ import numpy as np
 # ax = fig.add_subplot(111, polar=True)
 # for i, counts in enumerate(data):
 #     ax.plot(angles, counts, 'o-', linewidth=2, label=types[i])
-
+    
 # ax.set_thetagrids(angles * 180/np.pi, hex_values)
 # ax.set_title('Occorrenze degli esagrammi per tipo (casuale)')
 # ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
+# plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(rand_log['time'])} esagrammi", wrap=True, horizontalalignment='center', fontsize=12)
 # plt.savefig('./docs/rand_radar.png')
 
 
-sig_log = pd.read_csv('sig.csv', sep=',')
-sig_log.set_index('time', inplace=True)
+sig_log = pd.read_csv('./data/sig.csv', sep=',')
+# sig_log.set_index('time', inplace=True)
 types = sig_log['type'].unique()
 
 fig, ax = plt.subplots()
@@ -47,10 +52,11 @@ for type in types:
     counts = df_type['hex'].value_counts().sort_index()
     ax.plot(counts.index, counts.values, label=type, marker='o')
 
-ax.set_xlabel('Esagrammi')
-ax.set_ylabel('Occorrenze')
+# ax.set_xlabel('Esagrammi')
+# ax.set_ylabel('Occorrenze')
 ax.set_title('Occorrenze degli esagrammi per tipo (significativo)')
 ax.legend()
+plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(sig_log['time'])} esagrammi", wrap=True, horizontalalignment='center', fontsize=12)
 plt.savefig('./docs/sig_rect.png')
 
 hex_values = range(1, 65)
@@ -69,4 +75,5 @@ for i, counts in enumerate(data):
 ax.set_thetagrids(angles * 180/np.pi, hex_values)
 ax.set_title('Occorrenze degli esagrammi per tipo (significativo)')
 ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
+plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(sig_log['time'])} esagrammi", wrap=True, horizontalalignment='center', fontsize=12)
 plt.savefig('./docs/sig_radar.png')

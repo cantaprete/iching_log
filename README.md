@@ -23,7 +23,7 @@ Questi, invece, sono i medesimi grafici utilizzando letture significative, ossia
 ![img](./docs/sig_rect.png)
 ![img](./docs/sig_radar.png)
 
-Al momento i dati sono troppo pochi (89 contro 10.000) per trarre qualsiasi conclusione sensata.
+Al momento i dati sono troppo pochi per trarre qualsiasi conclusione sensata.
 
 Ciò che mi aspetto è uno di questi tre casi:
 
