@@ -36,7 +36,7 @@ jobs:
       - name: Run Python script if file changed
         if: env.CHANGE_FLAG == 1
         run: |
-          sudo apt install ttf-mscorefonts-installer
+          sudo apt-get -y install unifont
           sudo fc-cache -f
           pip install matplotlib numpy pandas
           python docs/print_plots.py
