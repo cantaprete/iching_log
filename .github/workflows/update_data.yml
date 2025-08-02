@@ -1,0 +1,29 @@
+name: Update data
+on:
+  repository_dispatch:
+    types: [add_line]
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  add_line:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Add line
+        id: add_line
+        run: |
+          'echo "payload: ${{ toJson(github.event.client_payload) }}"'
+
+      # - name: Commit new data
+      #   id: commit_data
+      #   run: |
+      #     git config user.name "${{ github.actor }}"
+      #     git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+      #     git add -A
+      #     git commit -am "Add data - $(date -R)"
+      #     git push
