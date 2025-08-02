@@ -20,29 +20,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Get current commit SHA
-        id: get_current_commit
+      - name: Current status
+        id: get_current_status
         run: |
-          CURRENT_COMMIT=$(git rev-parse HEAD)
-          echo "Current commit: $CURRENT_COMMIT"
-          echo "CURRENT_COMMIT=$CURRENT_COMMIT" >> $GITHUB_ENV
-
-      - name: Check if file has changed
-        id: check_changes
-        run: |
-          if [ -z "${{ vars.LAST_COMMIT }}" ]; then
-            echo "No previous commit found."
+          echo "Changed flag: ${{ env.changed }}"
+          echo "Last commit: ${{ vars.LAST_COMMIT }}"
+          echo "Current commit: ${{ github.sha }}"
+          if [ "${{ vars.LAST_COMMIT }}" != "${{ github.sha }}"]; then
+            echo "${{ vars.LAST_COMMIT }} != ${{ github.sha }}"
             echo "changed=true" >> $GITHUB_ENV
           else
-            echo "Last commit: ${{ vars.LAST_COMMIT }}"
-            if [ "${{ vars.LAST_COMMIT }}" != "$CURRENT_COMMIT" ]; then
-              echo "Changes detected."
-              echo "changed=true" >> $GITHUB_ENV
-            else
-              echo "No changes detected."
-              echo "changed=false" >> $GITHUB_ENV
-            fi
-          fi
+            echo "${{ vars.LAST_COMMIT }} == ${{ github.sha }}"
+            echo "changed=true" >> $GITHUB_ENV
+          echo "Changed flag: ${{ env.changed }}"
 
       - name: Run Python script if file changed
         if: env.changed == true
@@ -64,5 +54,6 @@ jobs:
           if [ $status_code != "204" ]; then
             echo "Variable LAST_COMMIT not updated"
           else 
-            echo "Last commit updated to: ${{ github.sha }}"
+            echo "Last commit updated to ${{ github.sha }}"
           fi
+          echo "Status code: $status_code"
