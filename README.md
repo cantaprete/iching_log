@@ -1,8 +1,8 @@
 # I Ching Log
 
-Questo è un test per capire se l'I Ching è completamente casuale o se le letture sono in qualche modo significative.
+This is an experiment to understand whether I Ching's responses are completely random or there's something significant behind them.
 
-Il campione di controllo consiste in 10.000 letture dell'I Ching eseguite con [`iching-cli`](https://github.com/cantaprete/iching-cli) con il comando:
+The control sample consists in 10,000 consultations done with [`iching-cli`](https://github.com/cantaprete/iching-cli):
 
 ```sh
 echo "time,hex,type" > rand.csv
@@ -13,20 +13,26 @@ do
 done
 ```
 
-Il risultato è (prevedibilmente) casuale:
+It resulted in 18,232 hexagrams. There are, of course, as many primary hexagrams as secondary (8,132), and roughly 11% of the first two types combined for static hexagrams.[^1]
+
+When plotted, it's clear that the results are randomic:
 
 ![img](./docs/rand_rect.png)
 ![img](./docs/rand_radar.png)
 
-Questi, invece, sono i medesimi grafici utilizzando letture significative, ossia precedute dal desiderio di interrogare l'I Ching su una specifica domanda:
+I defined those as control samples because you're supposed to consult the I Ching with a meaningful question.  While the process uses a randomic technique, it's the meaning that should make the difference.
+
+I'm in the process of logging all meaningful consultations of the I Ching, and here is the data plotted in the same way as the sample data:
 
 ![img](./docs/sig_rect.png)
 ![img](./docs/sig_radar.png)
 
-Al momento i dati sono troppo pochi per trarre qualsiasi conclusione sensata.
+Of course, right now I have too little data to get to a conclusion, but I expect one of these will happen:
 
-Ciò che mi aspetto è uno di questi tre casi:
+1. The plots **won't show** a roughly random distribution between the three types of hexagrams.  Some hexagrams or areas will have more point then others.
 
-1. Indipendentemente dal numero di letture, i grafici non mostrano un andamento grossomodo casuale ma mostrano invece degli sbilanciamenti verso alcuni esagrammi, sia questo in generale o per un tipo specifico.
-2. Con l'approssimarsi di un numero sufficiente di letture, l'andamento è nel complesso grossomodo casuale. Nonostante ciò, se analizzato in blocchi determinati da periodi di tempo variabili ma significativi mostra sbilanciamenti verso alcuni esagrammi, sia questo in generale o per un tipo specifico.  Questo si spiegherebbe considerando che nel lungo periodo le questioni sottoposte all'I Ching variano, e con ciò la varietà delle risposte; ma presi in periodi significativi (ossia in periodi nei quali la maggior parte delle domande verteva sui medesimi quesiti), mostrano una preponderanza di certe risposte rispetto alle altre.
-3. Grossomodo casuale sia nella totalità sia in sottoinsiemi temporali significativi.
+2. The plots **will show** a roughly random distribution between the three types of hexagrams, but when taken in time-definied subset, some hexagrams or areas will have more point then others.  This could be explained by the fact that different times have a predominant share of different topic, so while the distribution of the whole set is random, the one of each subset is not.
+
+3. The plots **will show** a roughly random distribution between the three types of hexagrams, either taken as a whole or by subsets.
+
+[^1]: The I Ching can be consulted in different ways, but all of them ends up giving six lines. Each can either be moving or static. "Moving" means a line that starts as yang (solid, ⚊) and ends up yin (broken, ⚋) or viceversa, while a static lines doesn't change. If you have moving lines, you end up with two hexagrams: a primary with every line before they changed, and a secondary with them changed.
