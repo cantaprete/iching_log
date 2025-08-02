@@ -36,10 +36,12 @@ jobs:
       - name: Run Python script if file changed
         if: env.CHANGE_FLAG == 1
         run: |
-          sudo apt-get -y install unifont
+          sudo apt-get -y install ttf-unifont
           sudo fc-cache -f
           pip install matplotlib numpy pandas
           python docs/print_plots.py
+          git add docs
+          git commit -m "Update plots"
 
       - name: Save current commit SHA
         if: env.CHANGE_FLAG == 1
