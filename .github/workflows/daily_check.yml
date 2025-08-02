@@ -26,7 +26,7 @@ jobs:
           echo "Changed flag:   ${{ env.changed }}"
           echo "Last commit:    ${{ vars.LAST_COMMIT }}"
           echo "Current commit: ${{ github.sha }}"
-          if [[ "${{ vars.LAST_COMMIT }}" != "${{ github.sha }}"]]; then
+          if [[ "${{ vars.LAST_COMMIT }}" != "${{ github.sha }}" ]]; then
             # echo "${{ vars.LAST_COMMIT }} != ${{ github.sha }}"
             echo "changed=true" >> $GITHUB_ENV
           else
