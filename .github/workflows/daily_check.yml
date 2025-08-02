@@ -5,6 +5,9 @@ on:
     - cron: '8 14 * * *'
   workflow_dispatch:
 
+env:
+  last_commit: ${{ vars.LAST_COMMIT }}
+
 permissions:
   contents: read
   actions: write
@@ -17,18 +20,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Load last commit SHA
-        id: load_last_commit
-        run: |
-          if [ -f last_commit.txt ]; then
-            LAST_COMMIT=$(cat last_commit.txt)
-            echo "Last commit: $LAST_COMMIT"
-          else
-            LAST_COMMIT=""
-            echo "No previous commit found."
-          fi
-          echo "LAST_COMMIT=$LAST_COMMIT" >> $GITHUB_ENV
-
       - name: Get current commit SHA
         id: get_current_commit
         run: |
@@ -39,12 +30,12 @@ jobs:
       - name: Check if file has changed
         id: check_changes
         run: |
-          if [ -z "${{ secrets.LAST_COMMIT }}" ]; then
+          if [ -z "$last_commit" ]; then
             echo "No previous commit found."
             echo "changed=true" >> $GITHUB_ENV
           else
-            echo "Last commit: ${{ secrets.LAST_COMMIT }}"
-            if [ "${{ secrets.LAST_COMMIT }}" != "$CURRENT_COMMIT" ]; then
+            echo "Last commit: $last_commit"
+            if [ "$last_commit" != "$CURRENT_COMMIT" ]; then
               echo "Changes detected."
               echo "changed=true" >> $GITHUB_ENV
             else
