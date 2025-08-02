@@ -21,26 +21,32 @@ jobs:
         id: get_current_status
         run: |
           echo "CHANGE_FLAG=0" >> $GITHUB_ENV
-          echo "Changed flag:   $CHANGE_FLAG"
           echo "Last commit:    ${{ vars.LAST_COMMIT }}"
           echo "Current commit: ${{ github.sha }}"
           if [[ "${{ vars.LAST_COMMIT }}" != "${{ github.sha }}" ]]; then
-            echo "    Flag HAS changed"
+            echo "    CHANGED"
             echo "CHANGE_FLAG=1" >> $GITHUB_ENV
           else
-            echo "    Flag HAS NOT changed"
+            echo "    NOT CHANGED"
             echo "CHANGE_FLAG=0" >> $GITHUB_ENV
           fi
-          echo "Changed flag:   $CHANGE_FLAG"
-
-      - name: Generate plots
-        uses: actions/checkout@v3
+      
+      - name: Install software
         if: env.CHANGE_FLAG == 1
         run: |
           sudo apt-get -y install fonts-unifont
           sudo fc-cache -f
           pip install matplotlib numpy pandas
+
+      - name: Generate plots
+        uses: actions/checkout@v3
+        if: env.CHANGE_FLAG == 1
+        run: |
           python docs/print_plots.py
+      
+      - name: Commit new plots
+        uses: actions/checkout@v3
+        if: env.CHANGE_FLAG == 1
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           git add -A
