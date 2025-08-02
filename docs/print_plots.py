@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-plt.rcParams['font.family'] = 'Unifont'
+# plt.rcParams['font.family'] = 'Unifont'
 plt.rcParams['figure.figsize'] = [8.0, 6.0]
 plt.rcParams['figure.dpi'] = 200
 
