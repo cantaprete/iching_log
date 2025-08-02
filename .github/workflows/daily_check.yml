@@ -52,5 +52,6 @@ jobs:
 
       - name: Save current commit SHA
         run: |
-          echo "LAST_COMMIT=${{ github.sha }}" >> $GITHUB_ENV
+          echo "${{ github.sha }}" >> ${{ vars.LAST_COMMIT }}
           echo "Last commit updated to: $CURRENT_COMMIT"
+          echo "vars $GITHUB_ENV"
