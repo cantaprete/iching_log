@@ -40,6 +40,8 @@ jobs:
           sudo fc-cache -f
           pip install matplotlib numpy pandas
           python docs/print_plots.py
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           git add docs
           git commit -m "Update plots"
 
