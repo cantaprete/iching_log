@@ -23,17 +23,17 @@ jobs:
       - name: Current status
         id: get_current_status
         run: |
-          echo "Changed flag: ${{ env.changed }}"
-          echo "Last commit: ${{ vars.LAST_COMMIT }}"
+          echo "Changed flag:   ${{ env.changed }}"
+          echo "Last commit:    ${{ vars.LAST_COMMIT }}"
           echo "Current commit: ${{ github.sha }}"
-          if [ "${{ vars.LAST_COMMIT }}" != "${{ github.sha }}"]; then
-            echo "${{ vars.LAST_COMMIT }} != ${{ github.sha }}"
+          if [[ "${{ vars.LAST_COMMIT }}" != "${{ github.sha }}"]]; then
+            # echo "${{ vars.LAST_COMMIT }} != ${{ github.sha }}"
             echo "changed=true" >> $GITHUB_ENV
           else
-            echo "${{ vars.LAST_COMMIT }} == ${{ github.sha }}"
+            # echo "${{ vars.LAST_COMMIT }} == ${{ github.sha }}"
             echo "changed=true" >> $GITHUB_ENV
           fi
-          echo "Changed flag: ${{ env.changed }}"
+          echo "Changed flag:   ${{ env.changed }}"
 
       - name: Run Python script if file changed
         if: env.changed == true
@@ -51,8 +51,8 @@ jobs:
             -H "Authorization: Bearer $TOKEN" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/cantaprete/iching_log/actions/variables/LAST_COMMIT \
-            -d '{"name":"LAST_COMMIT", "value"=${{ github.sha }}}')
-          if [ $status_code != "204" ]; then
+            -d '{"name":"LAST_COMMIT", "value"="${{ github.sha }}}"')
+          if [[ $status_code != "204" ]]; then
             echo "Variable LAST_COMMIT not updated"
           else 
             echo "Last commit updated to ${{ github.sha }}"
