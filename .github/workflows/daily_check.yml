@@ -32,6 +32,7 @@ jobs:
           else
             echo "${{ vars.LAST_COMMIT }} == ${{ github.sha }}"
             echo "changed=true" >> $GITHUB_ENV
+          fi
           echo "Changed flag: ${{ env.changed }}"
 
       - name: Run Python script if file changed
