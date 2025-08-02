@@ -1,4 +1,4 @@
-name: Daily Check
+name: Print plots
 
 on:
   schedule:
@@ -10,7 +10,7 @@ permissions:
   actions: write
 
 jobs:
-  check_file_and_run_script:
+  check_file_and_print_plots:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,15 +37,9 @@ jobs:
           sudo apt-get -y install fonts-unifont
           sudo fc-cache -f
           pip install matplotlib numpy pandas
-
-      - name: Generate plots
-        uses: actions/checkout@v3
-        if: env.CHANGE_FLAG == 1
-        run: |
-          python docs/print_plots.py
       
       - name: Commit new plots
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         if: env.CHANGE_FLAG == 1
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
