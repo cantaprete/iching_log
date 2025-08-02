@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Current status
         id: get_current_status
@@ -33,7 +33,8 @@ jobs:
           fi
           echo "Changed flag:   $CHANGE_FLAG"
 
-      - name: Run Python script if file changed
+      - name: Generate plots
+        uses: actions/checkout@v3
         if: env.CHANGE_FLAG == 1
         run: |
           sudo apt-get -y install fonts-unifont
@@ -42,9 +43,9 @@ jobs:
           python docs/print_plots.py
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
-          git add docs
-          git commit -m "Update plots - $(date -R)"
-          git push origin HEAD
+          git add -A
+          git commit -am "Update plots - $(date -R)"
+          git push
 
       - name: Save current commit SHA
         if: env.CHANGE_FLAG == 1
