@@ -36,23 +36,21 @@ jobs:
       - name: Run Python script if file changed
         if: env.CHANGE_FLAG == 1
         run: |
+          sudo apt install ttf-mscorefonts-installer
+          sudo fc-cache -f
           pip install matplotlib numpy pandas
           python docs/print_plots.py
 
       - name: Save current commit SHA
+        if: env.CHANGE_FLAG == 1
         env:
           TOKEN: ${{ secrets.VAR_TOKEN }}
         run: |
-          status_code=$(curl -L \
+          curl -L \
             -X PATCH \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $TOKEN" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/cantaprete/iching_log/actions/variables/LAST_COMMIT \
-            -d '{"name":"LAST_COMMIT", "value":"${{ github.sha }}"}')
-          if [[ $status_code != "204" ]]; then
-            echo "Variable LAST_COMMIT not updated"
-          else 
-            echo "Last commit updated to ${{ github.sha }}"
-          fi
-          echo "Status code: $status_code"
+            -d '{"name":"LAST_COMMIT", "value":"${{ github.sha }}"}'
+          echo "Last commit updated to ${{ github.sha }}"
