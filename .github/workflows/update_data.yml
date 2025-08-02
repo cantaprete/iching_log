@@ -21,7 +21,6 @@ jobs:
       - name: Add line
         id: add_line
         run: |
-          echo >> data/meaningful-sample.csv
           echo '${{ toJson(github.event.client_payload) }}' | jq '"\(.timestamp),\(.lines.[] | map(.) | join(","))"' | tr -d '"' >> data/meaningful-sample.csv
 
       - name: Commit new data
