@@ -5,11 +5,11 @@ This is an experiment to understand whether I Ching's responses are completely r
 The control sample consists in 10,000 consultations done with [`iching-cli`](https://github.com/cantaprete/iching-cli):
 
 ```sh
-echo "time,hex,type" > rand.csv
+echo "time,hex,type" > data/control-sample.csv
 
 for i in {1..10000};
 do
-    iching -w -c >> rand.csv ;
+    iching -w -c >> data/control-sample.csv ;
 done
 ```
 
