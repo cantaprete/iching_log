@@ -20,21 +20,21 @@ jobs:
       - name: Current status
         id: get_current_status
         run: |
-          echo "CHANGE_FLAG=false" >> $GITHUB_ENV
+          echo "CHANGE_FLAG=0" >> $GITHUB_ENV
           echo "Changed flag:   $CHANGE_FLAG"
           echo "Last commit:    ${{ vars.LAST_COMMIT }}"
           echo "Current commit: ${{ github.sha }}"
           if [[ "${{ vars.LAST_COMMIT }}" != "${{ github.sha }}" ]]; then
             echo "    Flag HAS changed"
-            echo "CHANGE_FLAG=true" >> $GITHUB_ENV
+            echo "CHANGE_FLAG=1" >> $GITHUB_ENV
           else
             echo "    Flag HAS NOT changed"
-            echo "CHANGE_FLAG=false" >> $GITHUB_ENV
+            echo "CHANGE_FLAG=0" >> $GITHUB_ENV
           fi
           echo "Changed flag:   $CHANGE_FLAG"
 
       - name: Run Python script if file changed
-        if: env.CHANGE_FLAG == true
+        if: env.CHANGE_FLAG == 1
         run: |
           pip install matplotlib numpy pandas
           python docs/print_plots.py
@@ -49,7 +49,7 @@ jobs:
             -H "Authorization: Bearer $TOKEN" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/cantaprete/iching_log/actions/variables/LAST_COMMIT \
-            -d '{"name":"LAST_COMMIT", "value"="${{ github.sha }}"}')
+            -d '{"name":"LAST_COMMIT", "value":"${{ github.sha }}"}')
           if [[ $status_code != "204" ]]; then
             echo "Variable LAST_COMMIT not updated"
           else 
