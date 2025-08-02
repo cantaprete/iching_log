@@ -14,16 +14,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Install requirements
+        id: install_reqs
+        run: sudo apt install -y jq
+
       - name: Add line
         id: add_line
         run: |
-          'echo "payload: ${{ toJson(github.event.client_payload) }}"'
+          echo "${{ toJson(github.event.client_payload) }}" | jq '"\(.client_payload.timestamp),\(.client_payload.lines.[] | map(.) | join(","))"' | tr -d '"' >> data/meaningful-sample.csv
 
-      # - name: Commit new data
-      #   id: commit_data
-      #   run: |
-      #     git config user.name "${{ github.actor }}"
-      #     git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
-      #     git add -A
-      #     git commit -am "Add data - $(date -R)"
-      #     git push
+
+      - name: Commit new data
+        id: commit_data
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          git add -A
+          git commit -am "Add data - $(date -R)"
+          git push
