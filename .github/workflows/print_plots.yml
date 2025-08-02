@@ -38,6 +38,11 @@ jobs:
           sudo fc-cache -f
           pip install matplotlib numpy pandas
       
+      - name: Generate plots
+        if: env.CHANGE_FLAG == 1
+        run: |
+          python docs/print_plots.py
+      
       - name: Commit new plots
         uses: actions/checkout@v2
         if: env.CHANGE_FLAG == 1
