@@ -5,7 +5,7 @@ import numpy as np
 
 plt.rcParams['font.family'] = 'Times'
 
-rand_log = pd.read_csv('./data/rand.csv', sep=',')
+rand_log = pd.read_csv('./data/control-sample.csv', sep=',')
 # rand_log.set_index('time', inplace=True)
 types = rand_log['type'].unique()
 
@@ -42,7 +42,7 @@ plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(rand_log['time'])} hex
 plt.savefig('./docs/rand_radar.png')
 
 
-sig_log = pd.read_csv('./data/sig.csv', sep=',')
+sig_log = pd.read_csv('./data/meaningful-sample.csv', sep=',')
 # sig_log.set_index('time', inplace=True)
 types = sig_log['type'].unique()
 
