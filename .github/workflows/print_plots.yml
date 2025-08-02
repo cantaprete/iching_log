@@ -14,8 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Current status
         id: get_current_status
@@ -30,22 +29,19 @@ jobs:
             echo "    NOT CHANGED"
             echo "CHANGE_FLAG=0" >> $GITHUB_ENV
           fi
-      
-      - name: Install software
-        if: env.CHANGE_FLAG == 1
-        run: |
-          sudo apt-get -y install fonts-unifont
-          sudo fc-cache -f
-          pip install matplotlib numpy pandas
-      
+
       - name: Generate plots
+        id: generate_plots
         if: env.CHANGE_FLAG == 1
         run: |
+          pip install -r docs/requirements.txt
           python docs/print_plots.py
-      
+          ls -la
+        
       - name: Commit new plots
-        uses: actions/checkout@v2
+        id: commit_plot
         if: env.CHANGE_FLAG == 1
+        run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           git add -A
