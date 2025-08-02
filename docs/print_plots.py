@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-plt.rcParams['font.family'] = 'Times'
+plt.rcParams['font.family'] = 'Arial'
+plt.rcParams['figure.figsize'] = [8.0, 6.0]
+plt.rcParams['figure.dpi'] = 200
 
 rand_log = pd.read_csv('./data/control-sample.csv', sep=',')
 # rand_log.set_index('time', inplace=True)
@@ -21,6 +23,7 @@ ax.set_title('Number of hexagrams by type (control sample)')
 ax.legend()
 plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(rand_log['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
 plt.savefig('./docs/rand_rect.png')
+plt.clf()
 
 hex_values = range(1, 65)
 data = []
@@ -30,7 +33,6 @@ for type in types:
     data.append(counts)
 
 angles = np.linspace(0, 2*np.pi, len(hex_values), endpoint=False)
-fig = plt.figure(figsize=(6, 6))
 ax = fig.add_subplot(111, polar=True)
 for i, counts in enumerate(data):
     ax.plot(angles, counts, 'o-', linewidth=2, label=types[i])
@@ -40,6 +42,7 @@ ax.set_title('Number of hexagrams by type (control sample)')
 ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
 plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(rand_log['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
 plt.savefig('./docs/rand_radar.png')
+plt.clf()
 
 
 sig_log = pd.read_csv('./data/meaningful-sample.csv', sep=',')
@@ -58,6 +61,7 @@ ax.set_title('Number of hexagrams by type (meaningful sample)')
 ax.legend()
 plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(sig_log['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
 plt.savefig('./docs/sig_rect.png')
+plt.clf()
 
 hex_values = range(1, 65)
 data = []
@@ -67,7 +71,6 @@ for type in types:
     data.append(counts)
 
 angles = np.linspace(0, 2*np.pi, len(hex_values), endpoint=False)
-fig = plt.figure(figsize=(6, 6))
 ax = fig.add_subplot(111, polar=True)
 for i, counts in enumerate(data):
     ax.plot(angles, counts, 'o-', linewidth=2, label=types[i])
