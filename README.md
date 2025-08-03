@@ -35,4 +35,8 @@ Of course, right now I have too little data to get to a conclusion, but I expect
 
 3. The plots **will show** a roughly random distribution between the three types of hexagrams, either taken as a whole or by subsets.
 
+## How I log my readings
+
+Logging can be quite boring. To make it easier, I built an iOS shortcut (you can find it [here](Record%20response.shortcut)) that sends a JSON packet to Github.  [This workflow](.github/workflows/update_data.yml) does the rest.
+
 [^1]: The I Ching can be consulted in different ways, but all of them ends up giving six lines. Each can either be moving or static. "Moving" means a line that starts as yang (solid, ⚊) and ends up yin (broken, ⚋) or viceversa, while a static lines doesn't change. If you have moving lines, you end up with two hexagrams: a primary with every line before they changed, and a secondary with them changed.
