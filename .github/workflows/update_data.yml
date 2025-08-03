@@ -14,6 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Print payload
+        id: print_payload
+        run: |
+          echo 'Payload:'
+          echo '${{ toJson(github.event.client_payload) }}' | jq '"\(.timestamp),\(.lines.[] | map(.) | join(","))"' | tr -d '"'
+
       - name: Install requirements
         id: install_reqs
         run: sudo apt-get install -y jq
