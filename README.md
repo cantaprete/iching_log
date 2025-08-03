@@ -8,15 +8,15 @@ It resulted in 182,137 hexagrams. There are, of course, as many primary hexagram
 
 When plotted, it's clear that the results are randomic:
 
-![img](./docs/rand_rect.png)
-![img](./docs/rand_radar.png)
+![img](./docs/random_rect.png)
+![img](./docs/random_radar.png)
 
 I defined those as control samples because you're supposed to consult the I Ching with a meaningful question.  While the process uses a randomic technique, it's the meaning that should make the difference.
 
 I'm in the process of logging all meaningful consultations of the I Ching, and here is the data plotted in the same way as the sample data:
 
-![img](./docs/sig_rect.png)
-![img](./docs/sig_radar.png)
+![img](./docs/meaningful_rect.png)
+![img](./docs/meaningful_radar.png)
 
 Of course, right now I have too little data to get to a conclusion, but I expect one of these will happen:
 
