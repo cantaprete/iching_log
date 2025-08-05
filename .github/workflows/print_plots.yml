@@ -3,7 +3,7 @@ name: Print plots
 on:
   workflow_dispatch:
   schedule:
-    - cron: 8 14 * * *
+    - cron: 55 11 * * *
 
 permissions:
   contents: write
