@@ -35,7 +35,7 @@ jobs:
         if: env.CHANGE_FLAG == 1
         run: |
           pip install -r docs/requirements.txt
-          python docs/print_plots.py
+          python docs/print_plots.py ../data/meaningful-sample.csv "Number of hexagrams by type (meaningful sample)" meaningful
         
       - name: Commit new plots
         id: commit_plot

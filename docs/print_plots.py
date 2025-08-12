@@ -1,75 +1,56 @@
+''' Print the plots '''
 import datetime
+import sys
+import os
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-# plt.rcParams['font.family'] = 'Unifont'
+if len(sys.argv) != 4:
+    print(f"Usage: {sys.argv[0]} <csv_file> <plot_title> <file_prefix")
+    sys.exit(1)
+
+csv_file = sys.argv[1]
+plot_title = sys.argv[2]
+file_prefix = sys.argv[3]
+
 plt.rcParams['figure.figsize'] = [8.0, 6.0]
 plt.rcParams['figure.dpi'] = 200
 
-# random_log = pd.read_csv('./data/control-sample.csv', sep=',')
-# # random_log.set_index('time', inplace=True)
-# types = random_log['type'].unique()
+df = pd.read_csv(csv_file, sep=',')
+types = df['type'].unique()
 
-# fig, ax = plt.subplots()
-# for type in types:
-#     df_type = random_log[random_log['type'] == type]
-#     counts = df_type['hex'].value_counts().sort_index()
-#     ax.plot(counts.index, counts.values, label=type, marker='o')
+counts_by_type = {}
+hex_values = sorted(df['hex'].unique())
+for t in types:
+    df_type = df[df['type'] == t]
+    counts_by_type[t] = df_type['hex'].value_counts().reindex(hex_values, fill_value=0)
 
-# # ax.set_xlabel('hexagrams')
-# # ax.set_ylabel('quantity')
-# ax.set_title('Number of hexagrams by type (control sample)')
-# ax.legend()
-# plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(random_log['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
-# print('Drawing plot random_rect.png')
-# plt.savefig('./docs/random_rect.png')
-# plt.clf()
-
-# hex_values = range(1, 65)
-# data = []
-# for type in types:
-#     df_type = random_log[random_log['type'] == type]
-#     counts = [df_type[df_type['hex'] == hex_value].shape[0] for hex_value in hex_values]
-#     data.append(counts)
-
-# angles = np.linspace(0, 2*np.pi, len(hex_values), endpoint=False)
-# ax = fig.add_subplot(111, polar=True)
-# for i, counts in enumerate(data):
-#     ax.plot(angles, counts, 'o-', linewidth=2, label=types[i])
-    
-# ax.set_thetagrids(angles * 180/np.pi, hex_values)
-# ax.set_title('Number of hexagrams by type (control sample)')
-# ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
-# plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(random_log['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
-# print('Drawing plot random_radar.png')
-# plt.savefig('./docs/random_radar.png')
-# plt.clf()
-
-
-meaningful_log = pd.read_csv('./data/meaningful-sample.csv', sep=',')
-# meaningful_log.set_index('time', inplace=True)
-types = meaningful_log['type'].unique()
+counts_df = pd.DataFrame(counts_by_type, index=hex_values)
 
 fig, ax = plt.subplots()
-for type in types:
-    df_type = meaningful_log[meaningful_log['type'] == type]
-    counts = df_type['hex'].value_counts().sort_index()
-    ax.plot(counts.index, counts.values, label=type, marker='o')
+counts_df.plot(
+    kind='bar',
+    stacked=True,
+    ax=ax
+)
 
-# ax.set_xlabel('hexagrams')
-# ax.set_ylabel('quantity')
-ax.set_title('Number of hexagrams by type (meaningful sample)')
+ax.set_title(plot_title)
 ax.legend()
-plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(meaningful_log['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
-print('Drawing plot meaningful_rect.png')
-plt.savefig('./docs/meaningful_rect.png')
+plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
+xticks = range(len(hex_values))
+ax.set_xticks(xticks[::2])  # Mostra solo ogni seconda etichetta
+ax.set_xticklabels(hex_values[::2])
+
+print(f'Drawing plot {file_prefix}_bars.png')
+plt.savefig(f'./{file_prefix}_bars.png')
 plt.clf()
 
+# Radar
 hex_values = range(1, 65)
 data = []
-for type in types:
-    df_type = meaningful_log[meaningful_log['type'] == type]
+for t in types:
+    df_type = df[df['type'] == t]
     counts = [df_type[df_type['hex'] == hex_value].shape[0] for hex_value in hex_values]
     data.append(counts)
 
@@ -77,10 +58,11 @@ angles = np.linspace(0, 2*np.pi, len(hex_values), endpoint=False)
 ax = fig.add_subplot(111, polar=True)
 for i, counts in enumerate(data):
     ax.plot(angles, counts, 'o-', linewidth=2, label=types[i])
-
-ax.set_thetagrids(angles * 180/np.pi, hex_values)
-ax.set_title('Number of hexagrams by type (meaningful sample)')
+    
+ax.set_title(plot_title)
 ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
-plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(meaningful_log['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
-print('Drawing plot meaningful_radar.png')
-plt.savefig('./docs/meaningful_radar.png')
+ax.set_thetagrids(angles * 180/np.pi, hex_values)
+plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
+
+print(f'Drawing plot {file_prefix}_radar.png')
+plt.savefig(f'./{file_prefix}_radar.png')
