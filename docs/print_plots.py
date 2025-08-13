@@ -149,16 +149,20 @@ for index, row in df_filtered.iterrows():
         pairs[-1]['secondary'] = hex_value
 
 bit_changes = np.zeros(6, dtype=int)
+no_of_changes = np.zeros(6, dtype=int)
 
 for pair in pairs:
     primary_hex = iching.get(pair['primary'])
     secondary_hex = iching.get(pair['secondary'])
+    changes = 0
     
     xor_result = primary_hex ^ secondary_hex
     
     for i in range(6):
         if xor_result & (1 << i):
             bit_changes[i] += 1
+            changes += 1
+    no_of_changes[changes - 1] += 1
 
 bit_labels = [f'Line {i+1}' for i in range(6)]
 fig, ax = plt.subplots()
@@ -169,3 +173,13 @@ plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams
 
 print(f'Drawing plot {file_prefix}_moving.png')
 plt.savefig(f'./{file_prefix}_moving.png')
+plt.clf()
+
+fig, ax = plt.subplots()
+ax.bar([1,2,3,4,5,6], no_of_changes)
+
+ax.set_title(f'Quantity of moving lines ({file_prefix} samples)')
+plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
+
+print(f'Drawing plot {file_prefix}_moving_no.png')
+plt.savefig(f'./{file_prefix}_moving_no.png')

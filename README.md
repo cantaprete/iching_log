@@ -11,6 +11,7 @@ When plotted, it's clear that the results are randomic:
 ![img](./docs/random_bars.png)
 ![img](./docs/random_radar.png)
 ![img](./docs/random_moving.png)
+![img](./docs/random_moving_no.png)
 
 I defined those as control samples because you're supposed to consult the I Ching with a meaningful question.  While the process uses a randomic technique, it's the meaning that should make the difference.
 
@@ -19,6 +20,7 @@ I'm in the process of logging all meaningful consultations of the I Ching, and h
 ![img](./docs/meaningful_bars.png)
 ![img](./docs/meaningful_radar.png)
 ![img](./docs/meaningful_moving.png)
+![img](./docs/meaningful_moving_no.png)
 
 Of course, right now I have too little data to get to a conclusion, but I expect one of these will happen:
 
