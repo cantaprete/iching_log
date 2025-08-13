@@ -35,7 +35,7 @@ jobs:
         if: env.CHANGE_FLAG == 1
         run: |
           pip install -r docs/requirements.txt
-          python docs/print_plots.py ../data/meaningful-sample.csv meaningful
+          python docs/print_plots.py data/meaningful-sample.csv meaningful
         
       - name: Commit new plots
         id: commit_plot
