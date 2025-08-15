@@ -44,7 +44,7 @@ ax.set_xticks(xticks[::2])
 ax.set_xticklabels(hex_values[::2])
 
 print(f'Drawing plot {file_prefix}_bars.png')
-plt.savefig(f'./{file_prefix}_bars.png')
+plt.savefig(f'./docs/{file_prefix}_bars.png')
 plt.clf()
 
 # Radar
@@ -66,7 +66,7 @@ ax.set_thetagrids(angles * 180/np.pi, hex_values)
 plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
 
 print(f'Drawing plot {file_prefix}_radar.png')
-plt.savefig(f'./{file_prefix}_radar.png')
+plt.savefig(f'./docs/{file_prefix}_radar.png')
 plt.clf()
 
 # Moving lines analysis
@@ -172,7 +172,7 @@ ax.set_title(f'Moving lines ({file_prefix} samples)')
 plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
 
 print(f'Drawing plot {file_prefix}_moving.png')
-plt.savefig(f'./{file_prefix}_moving.png')
+plt.savefig(f'./docs/{file_prefix}_moving.png')
 plt.clf()
 
 fig, ax = plt.subplots()
@@ -182,4 +182,4 @@ ax.set_title(f'Quantity of moving lines ({file_prefix} samples)')
 plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
 
 print(f'Drawing plot {file_prefix}_moving_no.png')
-plt.savefig(f'./{file_prefix}_moving_no.png')
+plt.savefig(f'./docs/{file_prefix}_moving_no.png')
