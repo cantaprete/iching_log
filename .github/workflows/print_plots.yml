@@ -36,7 +36,7 @@ jobs:
         run: |
           pip install -r docs/requirements.txt
           python docs/print_plots.py data/meaningful-sample.csv meaningful
-          python docs/print_plots.py data/random-sample.csv random_subset $(wc -l data/meaningful-sample.csv | awk '{print $1;}')
+          python docs/print_plots.py data/control-sample.csv random_subset $(wc -l data/meaningful-sample.csv | awk '{print $1;}')
         
       - name: Commit new plots
         id: commit_plot
