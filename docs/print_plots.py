@@ -6,19 +6,22 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-if len(sys.argv) != 3:
-    print(f"Usage: {sys.argv[0]} <csv_file> <file_prefix")
+if len(sys.argv) < 3:
+    print(f'Usage: {sys.argv[0]} <csv_file> <file_prefix> [length + 1]')
     sys.exit(1)
 
 csv_file = sys.argv[1]
 file_prefix = sys.argv[2]
-# csv_file = '/Users/jacopo/Developer/iching_log/data/meaningful-sample.csv'
-# file_prefix = 'meaningful'
+records = -1
+if len(sys.argv) > 3:
+    records = int(sys.argv[3]) - 1
 
 plt.rcParams['figure.figsize'] = [8.0, 6.0]
 plt.rcParams['figure.dpi'] = 200
 
 df = pd.read_csv(csv_file, sep=',')
+if records > 0:
+    df = df.head(records)
 types = df['type'].unique()
 
 counts_by_type = {}
@@ -38,7 +41,7 @@ counts_df.plot(
 
 ax.set_title(f'Number of hexagrams by type ({file_prefix} sample)')
 ax.legend()
-plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
+plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df['time'])} hexagrams', wrap=True, horizontalalignment='center', fontsize=12)
 xticks = range(len(hex_values))
 ax.set_xticks(xticks[::2])
 ax.set_xticklabels(hex_values[::2])
@@ -63,7 +66,7 @@ for i, counts in enumerate(data):
 ax.set_title(f'Number of hexagrams by type ({file_prefix} sample)')
 ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
 ax.set_thetagrids(angles * 180/np.pi, hex_values)
-plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
+plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df['time'])} hexagrams', wrap=True, horizontalalignment='center', fontsize=12)
 
 print(f'Drawing plot {file_prefix}_radar.png')
 plt.savefig(f'./docs/{file_prefix}_radar.png')
@@ -156,7 +159,8 @@ for pair in pairs:
     secondary_hex = iching.get(pair['secondary'])
     changes = 0
     
-    xor_result = primary_hex ^ secondary_hex
+    if isinstance(secondary_hex, int):
+        xor_result = primary_hex ^ secondary_hex
     
     for i in range(6):
         if xor_result & (1 << i):
@@ -166,20 +170,33 @@ for pair in pairs:
 
 bit_labels = [f'Line {i+1}' for i in range(6)]
 fig, ax = plt.subplots()
-ax.bar(bit_labels, bit_changes)
+bits = ax.bar(bit_labels, bit_changes)
+
+total_lines = sum(bit_changes)
+total_no_of_changes = sum(no_of_changes)
+
+for bit in bits:
+    height = bit.get_height()
+    percent = 100 * float(bit.get_height())/float(total_lines)
+    ax.text(bit.get_x() + bit.get_width()/2., 1.0*height, '%.2f %%' % float(percent), size='small', ha='center', va='bottom')
 
 ax.set_title(f'Moving lines ({file_prefix} samples)')
-plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
+plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df['time'])} hexagrams', wrap=True, horizontalalignment='center', fontsize=12)
 
 print(f'Drawing plot {file_prefix}_moving.png')
 plt.savefig(f'./docs/{file_prefix}_moving.png')
 plt.clf()
 
 fig, ax = plt.subplots()
-ax.bar([1,2,3,4,5,6], no_of_changes)
+bits = ax.bar([1,2,3,4,5,6], no_of_changes)
+
+for bit in bits:
+    height = bit.get_height()
+    percent = 100 * float(bit.get_height())/float(total_no_of_changes)
+    ax.text(bit.get_x() + bit.get_width()/2., 1.0*height, '%d (%.2f%%)' % (int(height), float(percent)), size='small', ha='center', va='bottom')
 
 ax.set_title(f'Quantity of moving lines ({file_prefix} samples)')
-plt.figtext(0.5, 0.01, f"{datetime.datetime.now()} - {len(df['time'])} hexagrams", wrap=True, horizontalalignment='center', fontsize=12)
+plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df['time'])} hexagrams', wrap=True, horizontalalignment='center', fontsize=12)
 
 print(f'Drawing plot {file_prefix}_moving_no.png')
 plt.savefig(f'./docs/{file_prefix}_moving_no.png')
