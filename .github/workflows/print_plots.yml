@@ -42,16 +42,16 @@ jobs:
         id: install_imagemagick
         if: env.CHANGE_FLAG == 1
         run: |
-          sudo apt-get install imagemagick
+          sudo apt-get install -y imagemagick
 
       - name: Make the montage
         id: make_the_montage
         if: env.CHANGE_FLAG == 1
         run: |
-          magick montage docs/meaningful_bars.png docs/random_subset_bars.png -geometry +1+1 docs/comparison_bars.png
-          magick montage docs/meaningful_moving_no.png docs/random_subset_moving_no.png -geometry +1+1 docs/comparison_moving_no.png
-          magick montage docs/meaningful_moving.png docs/random_subset_moving.png -geometry +1+1 docs/comparison_moving.png
-          magick montage docs/meaningful_radar.png docs/random_subset_radar.png -geometry +1+1 docs/comparison_radar.png
+          montage docs/meaningful_bars.png docs/random_subset_bars.png -geometry +1+1 docs/comparison_bars.png
+          montage docs/meaningful_moving_no.png docs/random_subset_moving_no.png -geometry +1+1 docs/comparison_moving_no.png
+          montage docs/meaningful_moving.png docs/random_subset_moving.png -geometry +1+1 docs/comparison_moving.png
+          montage docs/meaningful_radar.png docs/random_subset_radar.png -geometry +1+1 docs/comparison_radar.png
         
       - name: Commit new plots
         id: commit_plot
