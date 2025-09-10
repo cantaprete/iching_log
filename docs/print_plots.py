@@ -39,7 +39,7 @@ counts_df.plot(
     ax=ax
 )
 
-ax.set_title(f'Number of hexagrams by type ({file_prefix} sample)')
+ax.set_title(f'Number of hexagrams by type ({file_prefix.replace('_', ' ')} samples)')
 ax.legend()
 plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df['time'])} hexagrams', wrap=True, horizontalalignment='center', fontsize=12)
 xticks = range(len(hex_values))
@@ -63,7 +63,7 @@ ax = fig.add_subplot(111, polar=True)
 for i, counts in enumerate(data):
     ax.plot(angles, counts, 'o-', linewidth=2, label=types[i])
     
-ax.set_title(f'Number of hexagrams by type ({file_prefix} sample)')
+ax.set_title(f'Number of hexagrams by type ({file_prefix.replace('_', ' ')} samples)')
 ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
 ax.set_thetagrids(angles * 180/np.pi, hex_values)
 plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df['time'])} hexagrams', wrap=True, horizontalalignment='center', fontsize=12)
@@ -180,7 +180,7 @@ for bit in bits:
     percent = 100 * float(bit.get_height())/float(total_lines)
     ax.text(bit.get_x() + bit.get_width()/2., 1.0*height, '%.2f %%' % float(percent), size='small', ha='center', va='bottom')
 
-ax.set_title(f'Moving lines ({file_prefix} samples)')
+ax.set_title(f'Moving lines ({file_prefix.replace('_', ' ')} samples)')
 plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df['time'])} hexagrams', wrap=True, horizontalalignment='center', fontsize=12)
 
 print(f'Drawing plot {file_prefix}_moving.png')
@@ -195,7 +195,7 @@ for bit in bits:
     percent = 100 * float(bit.get_height())/float(total_no_of_changes)
     ax.text(bit.get_x() + bit.get_width()/2., 1.0*height, '%d (%.2f%%)' % (int(height), float(percent)), size='small', ha='center', va='bottom')
 
-ax.set_title(f'Quantity of moving lines ({file_prefix} samples)')
+ax.set_title(f'Quantity of moving lines ({file_prefix.replace('_', ' ')} samples)')
 plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df['time'])} hexagrams', wrap=True, horizontalalignment='center', fontsize=12)
 
 print(f'Drawing plot {file_prefix}_moving_no.png')

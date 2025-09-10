@@ -22,6 +22,8 @@ I'm in the process of logging all meaningful consultations of the I Ching, and h
 ![img](./docs/meaningful_moving.png)
 ![img](./docs/meaningful_moving_no.png)
 
+For a comparison using the same sample size, see [Same size comparison](docs/comparison.md).
+
 Of course, right now I have too little data to get to a conclusion, but I expect one of these will happen:
 
 1. The plots **won't show** a roughly random distribution between the three types of hexagrams.  Some hexagrams or areas will have more point then others.
