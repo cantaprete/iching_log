@@ -42,7 +42,7 @@ jobs:
         id: install_imagemagick
         if: env.CHANGE_FLAG == 1
         run: |
-          apt-get install imagemagick
+          sudo apt-get install imagemagick
 
       - name: Make the montage
         id: make_the_montage
