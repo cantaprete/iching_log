@@ -8,3 +8,4 @@ magick montage meaningful_bars.png random_subset_bars.png -geometry +1+1 compari
 magick montage meaningful_moving_no.png random_subset_moving_no.png -geometry +1+1 comparison_moving_no.png
 magick montage meaningful_moving.png random_subset_moving.png -geometry +1+1 comparison_moving.png
 magick montage meaningful_radar.png random_subset_radar.png -geometry +1+1 comparison_radar.png
+magick montage meaningful_pie.png random_subset_pie.png -geometry +1+1 comparison_pie.png

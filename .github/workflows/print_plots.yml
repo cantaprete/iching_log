@@ -53,7 +53,8 @@ jobs:
           montage docs/meaningful_moving_no.png docs/random_subset_moving_no.png -geometry +1+1 docs/comparison_moving_no.png
           montage docs/meaningful_moving.png docs/random_subset_moving.png -geometry +1+1 docs/comparison_moving.png
           montage docs/meaningful_radar.png docs/random_subset_radar.png -geometry +1+1 docs/comparison_radar.png
-        
+          montage docs/meaningful_pie.png docs/random_subset_pie.png -geometry +1+1 docs/comparison_pie.png
+
       - name: Commit new plots
         id: commit_plot
         if: env.CHANGE_FLAG == 1

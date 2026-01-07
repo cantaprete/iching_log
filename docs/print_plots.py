@@ -24,6 +24,8 @@ if records > 0:
     df = df.head(records)
 types = df['type'].unique()
 
+# Bars
+
 counts_by_type = {}
 hex_values = sorted(df['hex'].unique())
 for t in types:
@@ -49,6 +51,20 @@ ax.set_xticklabels(hex_values[::2])
 print(f'Drawing plot {file_prefix}_bars.png')
 plt.savefig(f'./docs/{file_prefix}_bars.png')
 plt.clf()
+
+# Pie
+
+type_counts = df['type'].value_counts()
+
+fig, ax = plt.subplots()
+ax.pie(type_counts, labels=type_counts.index, autopct='%1.1f%%', startangle=90)
+ax.set_title(f'Distribution of Hexagram Types ({file_prefix.replace("_", " ")} samples)')
+plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df["time"])} hexagrams', wrap=True, horizontalalignment='center', fontsize=12)
+
+print(f'Drawing plot {file_prefix}_pie.png')
+plt.savefig(f'./docs/{file_prefix}_pie.png')
+plt.clf()
+
 
 # Radar
 hex_values = range(1, 65)
