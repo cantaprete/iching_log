@@ -30,22 +30,13 @@ jobs:
             echo "CHANGE_FLAG=0" >> $GITHUB_ENV
           fi
 
-      - name: Generate individual plots
+      - name: Generate plots
         id: generate_plots
         if: env.CHANGE_FLAG == 1
         run: |
           pip install -r docs/requirements.txt
           python docs/print_plots.py data/meaningful-sample.csv meaningful
           python docs/print_plots.py data/control-sample.csv random_subset $(wc -l data/meaningful-sample.csv | awk '{print $1;}')
-
-      - name: Generate comparison plots
-        id: generate_comparison_plots
-        if: env.CHANGE_FLAG == 1
-        run: |
-          python docs/print_comparison_plots.py \
-            data/meaningful-sample.csv meaningful \
-            data/control-sample.csv random_subset \
-            $(wc -l data/meaningful-sample.csv | awk '{print $1;}')
 
       - name: Install ImageMagick
         id: install_imagemagick
