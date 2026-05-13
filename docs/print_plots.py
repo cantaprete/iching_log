@@ -216,3 +216,76 @@ plt.figtext(0.5, 0.01, f'{datetime.datetime.now()} - {len(df['time'])} hexagrams
 
 print(f'Drawing plot {file_prefix}_moving_no.png')
 plt.savefig(f'./docs/{file_prefix}_moving_no.png')
+plt.clf()
+
+# Heatmap: moving lines per hexagram (raw counts + normalised per occurrence)
+
+# Build (64, 6) matrices: raw counts and occurrence counts per primary hexagram
+line_counts = np.zeros((64, 6), dtype=int)
+occurrences = np.zeros(64, dtype=int)
+
+for pair in pairs:
+    primary_hex   = iching.get(pair['primary'])
+    secondary_hex = iching.get(pair['secondary'])
+    if not isinstance(secondary_hex, int):
+        continue
+    row_idx = pair['primary'] - 1          # 0-based index for hexagram 1..64
+    occurrences[row_idx] += 1
+    xor_result = primary_hex ^ secondary_hex
+    for i in range(6):
+        if xor_result & (1 << i):
+            line_counts[row_idx, i] += 1
+
+# Normalised: avg moving occurrences per consultation of that hexagram
+with np.errstate(invalid='ignore'):
+    normalised = np.where(
+        occurrences[:, None] > 0,
+        line_counts / occurrences[:, None],
+        np.nan
+    )
+
+# Figure: 64 rows × 12 cols (6 raw + 6 normalised), with a separator column
+fig, axes = plt.subplots(1, 2, figsize=(14, 18), dpi=200)
+fig.subplots_adjust(wspace=0.05)
+
+hex_labels  = [str(i) for i in range(1, 65)]
+line_labels = [str(i) for i in range(1, 7)]
+
+for ax, data, title, fmt in [
+    (axes[0], line_counts.astype(float), 'Raw counts',   'd'),
+    (axes[1], normalised,                'Normalised\n(avg per consultation)', '.2f'),
+]:
+    # Replace NaN with 0 only for colour mapping; keep NaN cells visually distinct
+    plot_data = np.where(np.isnan(data), 0, data)
+    im = ax.imshow(plot_data, aspect='auto', cmap='YlOrRd', interpolation='nearest')
+    ax.set_title(title, fontsize=11, pad=8)
+    ax.set_xticks(range(6))
+    ax.set_xticklabels(line_labels, fontsize=8)
+    ax.set_xlabel('Line', fontsize=9)
+    ax.set_yticks(range(64))
+    ax.set_yticklabels(hex_labels, fontsize=6)
+    ax.set_ylabel('Hexagram', fontsize=9)
+    # Annotate each cell
+    vmax = np.nanmax(data) if np.nanmax(data) > 0 else 1
+    for r in range(64):
+        for c in range(6):
+            val = data[r, c]
+            if np.isnan(val):
+                txt = '—'
+                colour = 'grey'
+            else:
+                txt = format(val, fmt)
+                colour = 'white' if val > vmax * 0.6 else 'black'
+            ax.text(c, r, txt, ha='center', va='center', fontsize=4.5, color=colour)
+    fig.colorbar(im, ax=ax, fraction=0.02, pad=0.02)
+
+fig.suptitle(
+    f'Moving lines per hexagram ({file_prefix.replace("_", " ")} samples)',
+    fontsize=13, y=1.002
+)
+plt.figtext(0.5, -0.005, f'{datetime.datetime.now()} - {len(df["time"])} hexagrams',
+            wrap=True, horizontalalignment='center', fontsize=9)
+
+print(f'Drawing plot {file_prefix}_heatmap.png')
+plt.savefig(f'./docs/{file_prefix}_heatmap.png', bbox_inches='tight')
+plt.clf()

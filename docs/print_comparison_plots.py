@@ -93,6 +93,38 @@ def compute_moving_data(df):
     return bit_changes, no_of_changes
 
 
+def compute_heatmap_data(df):
+    df_filtered = df[df['type'] != 'static']
+    pairs = []
+    for _, row in df_filtered.iterrows():
+        if row['type'] == 'primary':
+            pairs.append({'primary': row['hex'], 'secondary': 0})
+        elif row['type'] == 'secondary':
+            pairs[-1]['secondary'] = row['hex']
+
+    line_counts = np.zeros((64, 6), dtype=int)
+    occurrences = np.zeros(64, dtype=int)
+    for pair in pairs:
+        primary_hex   = iching.get(pair['primary'])
+        secondary_hex = iching.get(pair['secondary'])
+        if not isinstance(secondary_hex, int):
+            continue
+        row_idx = pair['primary'] - 1
+        occurrences[row_idx] += 1
+        xor_result = primary_hex ^ secondary_hex
+        for i in range(6):
+            if xor_result & (1 << i):
+                line_counts[row_idx, i] += 1
+
+    with np.errstate(invalid='ignore'):
+        normalised = np.where(
+            occurrences[:, None] > 0,
+            line_counts / occurrences[:, None],
+            np.nan
+        )
+    return line_counts, normalised
+
+
 def footer(df):
     return f'{datetime.datetime.now()} - {len(df["time"])} hexagrams'
 
@@ -214,4 +246,58 @@ for df, bit_changes, no_of_changes, total_lines, total_no, prefix in [
     plt.figtext(0.5, 0.01, footer(df), wrap=True, horizontalalignment='center', fontsize=12)
     print(f'Drawing comparison plot {prefix}_moving_no.png')
     plt.savefig(f'./docs/{prefix}_moving_no.png')
+    plt.clf()
+
+# ── Heatmap ───────────────────────────────────────────────────────────────────
+
+line_counts_a, normalised_a = compute_heatmap_data(df_a)
+line_counts_b, normalised_b = compute_heatmap_data(df_b)
+
+# Unified colour scales across both datasets
+raw_vmax  = max(line_counts_a.max(), line_counts_b.max())
+norm_vmax = max(np.nanmax(normalised_a), np.nanmax(normalised_b))
+
+hex_labels  = [str(i) for i in range(1, 65)]
+line_labels = [str(i) for i in range(1, 7)]
+
+for df, line_counts, normalised, prefix in [
+    (df_a, line_counts_a, normalised_a, prefix_a),
+    (df_b, line_counts_b, normalised_b, prefix_b),
+]:
+    fig, axes = plt.subplots(1, 2, figsize=(14, 18), dpi=200)
+    fig.subplots_adjust(wspace=0.05)
+
+    for ax, data, title, fmt, vmax in [
+        (axes[0], line_counts.astype(float), 'Raw counts',                        'd',   raw_vmax),
+        (axes[1], normalised,                'Normalised\n(avg per consultation)', '.2f', norm_vmax),
+    ]:
+        plot_data = np.where(np.isnan(data), 0, data)
+        im = ax.imshow(plot_data, aspect='auto', cmap='YlOrRd',
+                       interpolation='nearest', vmin=0, vmax=vmax)
+        ax.set_title(title, fontsize=11, pad=8)
+        ax.set_xticks(range(6))
+        ax.set_xticklabels(line_labels, fontsize=8)
+        ax.set_xlabel('Line', fontsize=9)
+        ax.set_yticks(range(64))
+        ax.set_yticklabels(hex_labels, fontsize=6)
+        ax.set_ylabel('Hexagram', fontsize=9)
+        for r in range(64):
+            for c in range(6):
+                val = data[r, c]
+                if np.isnan(val):
+                    txt, colour = '—', 'grey'
+                else:
+                    txt    = format(val, fmt)
+                    colour = 'white' if val > vmax * 0.6 else 'black'
+                ax.text(c, r, txt, ha='center', va='center', fontsize=4.5, color=colour)
+        fig.colorbar(im, ax=ax, fraction=0.02, pad=0.02)
+
+    fig.suptitle(
+        f'Moving lines per hexagram ({prefix.replace("_", " ")} samples)',
+        fontsize=13, y=1.002
+    )
+    plt.figtext(0.5, -0.005, footer(df),
+                wrap=True, horizontalalignment='center', fontsize=9)
+    print(f'Drawing comparison plot {prefix}_heatmap.png')
+    plt.savefig(f'./docs/{prefix}_heatmap.png', bbox_inches='tight')
     plt.clf()
