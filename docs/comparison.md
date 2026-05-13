@@ -7,3 +7,4 @@ While the full random sample clearly shows the uniformity of the results, a comp
 ![img](./comparison_radar.png)
 ![img](./comparison_moving.png)
 ![img](./comparison_moving_no.png)
+![img](./comparison_heatmap.png)
