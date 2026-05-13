@@ -252,7 +252,7 @@ hex_labels  = [str(i) for i in range(1, 65)]
 line_labels = [str(i) for i in range(1, 7)]
 
 for ax, data, title, fmt in [
-    (axes[0], line_counts.astype(float), 'Raw counts',   'd'),
+    (axes[0], line_counts.astype(float), 'Raw counts',   '.0f'),
     (axes[1], normalised,                'Normalised\n(avg per consultation)', '.2f'),
 ]:
     # Replace NaN with 0 only for colour mapping; keep NaN cells visually distinct
@@ -277,7 +277,7 @@ for ax, data, title, fmt in [
                 txt = format(val, fmt)
                 colour = 'white' if val > vmax * 0.6 else 'black'
             ax.text(c, r, txt, ha='center', va='center', fontsize=4.5, color=colour)
-    fig.colorbar(im, ax=ax, fraction=0.02, pad=0.02)
+    # fig.colorbar(im, ax=ax, fraction=0.02, pad=0.02)
 
 fig.suptitle(
     f'Moving lines per hexagram ({file_prefix.replace("_", " ")} samples)',

@@ -268,7 +268,7 @@ for df, line_counts, normalised, prefix in [
     fig.subplots_adjust(wspace=0.05)
 
     for ax, data, title, fmt, vmax in [
-        (axes[0], line_counts.astype(float), 'Raw counts',                        'd',   raw_vmax),
+        (axes[0], line_counts.astype(float), 'Raw counts',                        '.0f',   raw_vmax),
         (axes[1], normalised,                'Normalised\n(avg per consultation)', '.2f', norm_vmax),
     ]:
         plot_data = np.where(np.isnan(data), 0, data)
