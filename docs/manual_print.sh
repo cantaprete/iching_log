@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+[ ! -d "./docs" ] && mkdir docs
+
 python3 print_plots.py ../data/control-sample.csv random
 python3 print_comparison_plots.py ../data/control-sample.csv random
 python3 print_plots.py ../data/meaningful-sample.csv meaningful
