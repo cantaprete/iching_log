@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-SAMPLES=100000
+SAMPLES=1000000
 
 echo "time,hex,type" > control-sample.csv
 

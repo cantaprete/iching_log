@@ -2,9 +2,9 @@
 
 This is an experiment to understand whether I Ching's responses are completely random or there's something significant behind them.
 
-The control sample consists in 100,000 consultations done with [`iching-cli`](https://github.com/cantaprete/iching-cli) and [this simple script](data/control_sample_gen.sh).
+The control sample consists in 582,569 consultations done with [`iching-cli`](https://github.com/cantaprete/iching-cli) and [this simple script](data/control_sample_gen.sh).
 
-It resulted in 182,137 hexagrams. There are, of course, as many primary hexagrams as secondary (82,136), and 17,864 static hexagrams.  The differences between the number of changing hexagrams and the number of static ones can surely be explained mathematically.[^1]
+It resulted in 1,061,186 hexagrams. There are, of course, as many primary hexagrams as secondary (479,117), and 103,452 static hexagrams.  The differences between the number of changing hexagrams and the number of static ones can surely be explained mathematically.[^1]
 
 When plotted, it's clear that the results are randomic:
 
