@@ -245,8 +245,8 @@ with np.errstate(invalid='ignore'):
     )
 
 # Figure: 64 rows × 12 cols (6 raw + 6 normalised), with a separator column
-fig, axes = plt.subplots(1, 2, figsize=(14, 18), dpi=200)
-fig.subplots_adjust(wspace=0.05)
+fig, axes = plt.subplots(1, 2, figsize=(6, 10), dpi=200)
+fig.subplots_adjust(wspace=0.12)
 
 hex_labels  = [str(i) for i in range(1, 65)]
 line_labels = [str(i) for i in range(1, 7)]
@@ -258,13 +258,13 @@ for ax, data, title, fmt in [
     # Replace NaN with 0 only for colour mapping; keep NaN cells visually distinct
     plot_data = np.where(np.isnan(data), 0, data)
     im = ax.imshow(plot_data, aspect='auto', cmap='YlOrRd', interpolation='nearest')
-    ax.set_title(title, fontsize=11, pad=8)
+    ax.set_title(title, fontsize=12)
     ax.set_xticks(range(6))
     ax.set_xticklabels(line_labels, fontsize=8)
     ax.set_xlabel('Line', fontsize=9)
     ax.set_yticks(range(64))
     ax.set_yticklabels(hex_labels, fontsize=6)
-    ax.set_ylabel('Hexagram', fontsize=9)
+    # ax.set_ylabel('Hexagram', fontsize=9)
     # Annotate each cell
     vmax = np.nanmax(data) if np.nanmax(data) > 0 else 1
     for r in range(64):
@@ -276,14 +276,11 @@ for ax, data, title, fmt in [
             else:
                 txt = format(val, fmt)
                 colour = 'white' if val > vmax * 0.6 else 'black'
-            ax.text(c, r, txt, ha='center', va='center', fontsize=4.5, color=colour)
+            ax.text(c, r, txt, ha='center', va='center', fontsize=5, color=colour)
     # fig.colorbar(im, ax=ax, fraction=0.02, pad=0.02)
 
-fig.suptitle(
-    f'Moving lines per hexagram ({file_prefix.replace("_", " ")} samples)',
-    fontsize=13, y=1.002
-)
-plt.figtext(0.5, -0.005, f'{datetime.datetime.now()} - {len(df["time"])} hexagrams',
+fig.suptitle(f'Moving lines per hexagram ({file_prefix.replace("_", " ")} samples)')
+plt.figtext(0.5, 0.05, f'{datetime.datetime.now()} - {len(df["time"])} hexagrams',
             wrap=True, horizontalalignment='center', fontsize=9)
 
 print(f'Drawing plot {file_prefix}_heatmap.png')
